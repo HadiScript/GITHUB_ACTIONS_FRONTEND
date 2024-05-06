@@ -20,3 +20,30 @@ jobs:
             npm install -f
             npm run build
             pm2 reload frontend --update-env
+  
+deploy:
+    name: Deploy to Production
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    steps:
+      - name: Confirm Deployment
+        id: confirm_deploy
+        uses: andstor/conditional-step@v2
+        with:
+          expression: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+      - name: Deploy if Confirmed
+        if: steps.confirm_deploy.outputs.should_run == 'true'
+        uses: appleboy/ssh-action@master
+        with:
+          host: 109.205.178.167
+          username: root
+          key: ${{ secrets.SSH_KEY }}
+          port: 22
+          script: |
+	    cd /root/test-actions/GITHUB_ACTIONS_FRONTEND
+            git pull
+            npm install -f
+            npm run build
+            pm2 reload frontend --update-env
+
