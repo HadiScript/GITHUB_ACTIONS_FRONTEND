@@ -5,22 +5,22 @@ on:
     branches: [main]
 
 jobs:
-  prompt_for_production:
-    name: Prompt for Production Deployment
-    runs-on: ubuntu-latest
-    outputs:
-      proceed_to_production: ${{ steps.prompt.outputs.proceed_to_production }}
-    steps:
-      - name: Prompt for production deployment
-        id: prompt
-        run: |
-          echo "Do you want to deploy to production? (yes/no)"
-          read -r response
-          if [ "$response" == "yes" ]; then
-            echo "true"
-          else
-            echo "false"
-          fi
+ # prompt_for_production:
+ #   name: Prompt for Production Deployment
+  #  runs-on: ubuntu-latest
+  #  outputs:
+  #    proceed_to_production: ${{ steps.prompt.outputs.proceed_to_production }}
+  #  steps:
+  #    - name: Prompt for production deployment
+  #      id: prompt
+  #      run: |
+  #        echo "Do you want to deploy to production? (yes/no)"
+  #        read -r response
+  #        if [ "$response" == "yes" ]; then
+  #          echo "true"
+  #        else
+  #          echo "false"
+  #        fi
 
   build_and_test:
     name: Build and Test Frontend
