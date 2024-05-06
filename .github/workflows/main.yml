@@ -4,25 +4,25 @@ on:
   push:
     branches: [main]
 
-# jobs:
- # prompt_for_production:
- #   name: Prompt for Production Deployment
-  #  runs-on: ubuntu-latest
-  #  outputs:
-  #    proceed_to_production: ${{ steps.prompt.outputs.proceed_to_production }}
-  #  steps:
-  #    - name: Prompt for production deployment
-  #      id: prompt
-  #      run: |
-  #        echo "Do you want to deploy to production? (yes/no)"
-  #        read -r response
-  #        if [ "$response" == "yes" ]; then
-  #          echo "true"
-  #        else
-  #          echo "false"
-  #        fi
+jobs:
+  prompt_for_production:
+    name: Prompt for Production Deployment
+    runs-on: ubuntu-latest
+    outputs:
+      proceed_to_production: ${{ steps.prompt.outputs.proceed_to_production }}
+    steps:
+      - name: Prompt for production deployment
+        id: prompt
+        run: |
+          echo "Do you want to deploy to production? (yes/no)"
+          read -r response
+          if [ "$response" == "yes" ]; then
+            echo "true"
+          else
+            echo "false"
+          fi
 
-  job:
+  build_and_test:
     name: Build and Test Frontend
     runs-on: ubuntu-latest
     needs: prompt_for_production
@@ -43,7 +43,7 @@ on:
   deploy_staging:
     name: Deploy to Staging
     runs-on: ubuntu-latest
-    needs: job
+    needs: build_and_test
     strategy:
       matrix:
         include:
@@ -51,27 +51,6 @@ on:
     steps:
       - name: Deploy to staging
         if: needs.prompt_for_production.outputs.proceed_to_production == 'false'
-        uses: appleboy/ssh-action@master
-        with:
-          host: 109.205.178.167
-          username: root
-          key: ${{ secrets.SSH_KEY }}
-          port: 22
-          script: |
-            cd /root/test-actions/GITHUB_ACTIONS_BACKEND
-            git pull
-            npm install -f
-            npm run build
-            pm2 reload frontend-new --update-env
-
-  deploy_production:
-    name: Deploy to Production
-    runs-on: ubuntu-latest
-    needs: job
-    if: ${{ needs.build_and_test.outputs.result == 'success' }}
-    steps:
-      - name: Deploy to production
-        if: needs.prompt_for_production.outputs.proceed_to_production == 'true'
         uses: appleboy/ssh-action@master
         with:
           host: 109.205.178.167
