@@ -1,7 +1,9 @@
 name: Testing Frontend Deployment
+
 on:
   push:
     branches: [main]
+
 jobs:
   build:
     name: Testing Frontend Deploy
@@ -28,12 +30,9 @@ jobs:
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     steps:
       - name: Confirm Deployment
-        id: confirm_deploy
-        uses: andstor/conditional-step@v2
-        with:
-          expression: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+        run: echo "Deploy if Confirmed"
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
       - name: Deploy if Confirmed
-        if: steps.confirm_deploy.outputs.should_run == 'true'
         uses: appleboy/ssh-action@master
         with:
           host: 109.205.178.167
@@ -46,4 +45,3 @@ jobs:
             npm install -f
             npm run build
             pm2 reload frontend --update-env
-
