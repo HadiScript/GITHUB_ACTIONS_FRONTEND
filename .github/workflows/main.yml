@@ -1,38 +1,13 @@
-name: Testing and Deployment
-
+name: Testing Frontend Deployment
 on:
   push:
     branches: [main]
-
 jobs:
-    name: Build and Test Frontend
+  build:
+    name: Testing Frontend Deploy
     runs-on: ubuntu-latest
-    needs: prompt_for_production
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      # Add steps to install dependencies, run tests, etc.
-      - name: Install Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '14'
-      - name: Install dependencies
-        run: npm install
-      - name: Run tests
-        run: npm test
-
-  deploy_staging:
-    name: Deploy to Staging
-    runs-on: ubuntu-latest
-    needs: build_and_test
-    strategy:
-      matrix:
-        include:
-          - proceed_to_production: false
-    steps:
-      - name: Deploy to staging
-        if: needs.prompt_for_production.outputs.proceed_to_production == 'false'
+      - name: executing remote ssh commands using password
         uses: appleboy/ssh-action@master
         with:
           host: 109.205.178.167
@@ -40,7 +15,7 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           port: 22
           script: |
-            cd /root/test-actions/GITHUB_ACTIONS_BACKEND
+            cd /root/test-actions/GITHUB_ACTIONS_FRONTEND
             git pull
             npm install -f
             npm run build
