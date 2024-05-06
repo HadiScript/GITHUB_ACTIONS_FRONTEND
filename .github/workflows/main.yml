@@ -41,7 +41,7 @@ deploy:
           key: ${{ secrets.SSH_KEY }}
           port: 22
           script: |
-	    cd /root/test-actions/GITHUB_ACTIONS_FRONTEND
+            cd /root/test-actions/GITHUB_ACTIONS_FRONTEND
             git pull
             npm install -f
             npm run build
