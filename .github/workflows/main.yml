@@ -3,6 +3,12 @@ name: Testing Frontend Deployment
 on:
   push:
     branches: [main]
+  workflow_dispatch:
+    inputs:
+      confirm_deploy:
+        description: 'Type "DEPLOY" to confirm deployment to Production'
+        required: true
+        default: 'DEPLOY'
 
 jobs:
   build:
@@ -22,24 +28,14 @@ jobs:
             npm install -f
             npm run build
             pm2 reload frontend --update-env
-  
+
   deploy:
     name: Deploy to Production
-  #  needs: build
+    needs: build
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    if: ${{ github.event.inputs.confirm_deploy == 'DEPLOY' && github.event_name == 'workflow_dispatch' }}
     steps:
-      - name: Confirm Deployment
-        id: confirm_deploy
-        run: |
-          read -p "Enter 'DEPLOY' to confirm deployment: " deploy_confirmation
-          echo $deploy_confirmation
-          if [[ "$deploy_confirmation" != "DEPLOY" ]]; then
-            echo "Deployment not confirmed. Exiting..."
-            exit 1
-          fi
-      - name: Deploy if Confirmed
-        if: steps.confirm_deploy.outputs.deploy_confirmation == 'DEPLOY'
+      - name: Deploy to Production
         uses: appleboy/ssh-action@master
         with:
           host: 109.205.178.167

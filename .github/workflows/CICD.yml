@@ -6,19 +6,23 @@ on:
   pull_request:
     branches: [ main ]
   workflow_dispatch:
+    inputs:
+      deploy_env:
+        description: 'Environment to deploy to (Dev, Staging, Production)'
+        required: true
+        default: 'Dev'
 
 jobs:
   Build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-
       - name: Compile
         run: echo Hello, world!
-    
+
   DeployDev:
     name: Deploy to Dev 
-    if: github.event_name == 'pull_request'
+    if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.deploy_env == 'Dev' }}
     needs: [Build]
     runs-on: ubuntu-latest
     environment: 
@@ -26,11 +30,11 @@ jobs:
       url: 'http://dev.myapp.com'
     steps:
       - name: Deploy
-        run: echo I am deploying! 
-    
+        run: echo I am deploying to Dev!
+
   DeployStaging:
     name: Deploy to Staging 
-    if: github.event.ref == 'refs/heads/main'
+    if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.deploy_env == 'Staging' }}
     needs: [Build]
     runs-on: ubuntu-latest
     environment: 
@@ -38,10 +42,11 @@ jobs:
       url: 'http://test.myapp.com'
     steps:
       - name: Deploy
-        run: echo I am deploying! 
-            
+        run: echo I am deploying to Staging!
+
   DeployProd:
     name: Deploy to Production 
+    if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.deploy_env == 'Production' }}
     needs: [DeployStaging]
     runs-on: ubuntu-latest
     environment: 
@@ -49,5 +54,4 @@ jobs:
       url: 'http://www.myapp.com'
     steps:
       - name: Deploy
-        run: echo I am deploying! 
-    
+        run: echo I am deploying to Production!
