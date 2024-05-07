@@ -21,10 +21,10 @@ jobs:
     ##    uses: actions/setup-node@v3
     ##    with:
     ##      node-version: '20.x'
-     - name: Install dependencies
-        run: npm install -f
-      - name: Build
-        run: npm run build
+        - name: Install dependencies
+           run: npm install -f
+         - name: Build
+           run: npm run build
 
   DeployDev:
     name: Deploy to Dev 
