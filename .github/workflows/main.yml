@@ -30,9 +30,16 @@ jobs:
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     steps:
       - name: Confirm Deployment
-        run: echo "Deploy if Confirmed"
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        id: confirm_deploy
+        run: |
+          read -p "Enter 'DEPLOY' to confirm deployment: " deploy_confirmation
+          echo $deploy_confirmation
+          if [[ "$deploy_confirmation" != "DEPLOY" ]]; then
+            echo "Deployment not confirmed. Exiting..."
+            exit 1
+          fi
       - name: Deploy if Confirmed
+        if: steps.confirm_deploy.outputs.deploy_confirmation == 'DEPLOY'
         uses: appleboy/ssh-action@master
         with:
           host: 109.205.178.167
