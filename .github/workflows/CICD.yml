@@ -19,7 +19,7 @@ jobs:
             cd /root/test-actions/GITHUB_ACTIONS_FRONTEND
             git pull
             npm install -f
-            npm run build
+            pm2 reload server --update-env
 
   Testing:
     runs-on: ubuntu-latest
@@ -40,7 +40,7 @@ jobs:
             git pull
             npm install -f
             npm run build
-            pm2 start "npm run dev" --name testing
+            pm2 reload testing --update-env
 
   Production:
     runs-on: ubuntu-latest
@@ -60,4 +60,4 @@ jobs:
             git pull
             npm install -f
             npm run build
-            pm2 start "npm run start" --name production
+            pm2 reload production --update-env
