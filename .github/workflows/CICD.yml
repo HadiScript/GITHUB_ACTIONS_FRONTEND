@@ -13,7 +13,7 @@ jobs:
         with:
           host: 109.205.178.167
           username: hadielearning
-          key: ${{ secrets.SSH_KEY }}
+          key: ${{ secrets.SSH_KEY_TEST }}
           port: 22
           script: |
             cd /root/test-actions/GITHUB_ACTIONS_FRONTEND
@@ -31,7 +31,7 @@ jobs:
         with:
           host: 109.205.178.167
           username: hadielearning
-          key: ${{ secrets.SSH_KEY }}
+          key: ${{ secrets.SSH_KEY_TEST }}
           port: 22
           script: |
             cd /root/test-actions/GITHUB_ACTIONS_FRONTEND
@@ -50,7 +50,7 @@ jobs:
         with:
           host: 109.205.178.167
           username: root
-          key: ${{ secrets.SSH_KEY }}
+          key: ${{ secrets.SSH_KEY_TEST }}
           port: 22
           script: |
             cd /root/test-actions/GITHUB_ACTIONS_FRONTEND
