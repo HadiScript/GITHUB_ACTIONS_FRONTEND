@@ -52,10 +52,12 @@ jobs:
           username: root
           key: ${{ secrets.GIT_KEY }}
           port: 22
-          script: |
+	  script: |
             cd /root/test-actions/GITHUB_ACTIONS_FRONTEND
             git pull
             npm install -f
             npm run build
-	    pm2 start "npm run start" --name testing
+            pm2 start "npm run dev" --name testing
+
+            
 
