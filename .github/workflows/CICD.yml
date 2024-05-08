@@ -4,9 +4,9 @@ on:
    workflow_dispatch:
    
 jobs:
-  staging:
+  Staging:
     runs-on: ubuntu-latest
-    environment: staging
+    environment: Staging
     steps:
       - name: executing remote ssh commands using password
         uses: appleboy/ssh-action@master
@@ -24,7 +24,7 @@ jobs:
   testing:
     runs-on: ubuntu-latest
     environment: testing
-      needs: staging
+      needs: Staging
       url: 'http://test1.hadielearning.com'
     steps:
       - name: executing remote ssh commands using password
