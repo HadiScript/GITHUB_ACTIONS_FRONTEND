@@ -57,6 +57,5 @@ jobs:
             git pull
             npm install -f
             npm run build
-##            pm2 start "npm run start" --name production
 	    pm2 start "npm start -- --port 3002" --name testing
 
