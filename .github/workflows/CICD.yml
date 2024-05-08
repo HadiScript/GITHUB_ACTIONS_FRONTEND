@@ -12,7 +12,7 @@ jobs:
         uses: appleboy/ssh-action@master
         with:
           host: 109.205.178.167
-          username: hadielearning
+          username: root
           key: ${{ secrets.GIT_KEY }}
           port: 22
           script: |
@@ -30,7 +30,7 @@ jobs:
         uses: appleboy/ssh-action@master
         with:
           host: 109.205.178.167
-          username: hadielearning
+          username: root
           key: ${{ secrets.GIT_KEY }}
           port: 22
           script: |
