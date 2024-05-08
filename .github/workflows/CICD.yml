@@ -23,8 +23,8 @@ jobs:
 
   Testing:
     runs-on: ubuntu-latest
-    url: 'actions.hadielearning.com'
     environment: testing
+    url: 'actions.hadielearning.com'
     needs: Staging
     steps:
       - name: executing remote ssh commands using password
