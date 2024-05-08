@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: Staging
     steps:
-      - name: Execute remote SSH commands using password
+      - name: executing remote ssh commands using password
         uses: appleboy/ssh-action@master
         with:
           host: 109.205.178.167
@@ -23,12 +23,11 @@ jobs:
 
   Testing:
     runs-on: ubuntu-latest
-    environment:
-      name: testing
-      url: 'actions.hadielearning.com'
+    environment: testing
+    url: 'actions.hadielearning.com'
     needs: Staging
     steps:
-      - name: Execute remote SSH commands using password
+      - name: executing remote ssh commands using password
         uses: appleboy/ssh-action@master
         with:
           host: 109.205.178.167
@@ -44,11 +43,10 @@ jobs:
 
   Production:
     runs-on: ubuntu-latest
-    environment:
-      name: Production
+    environment: Production
     needs: Testing
     steps:
-      - name: Execute remote SSH commands using password
+      - name: executing remote ssh commands using password
         uses: appleboy/ssh-action@master
         with:
           host: 109.205.178.167
@@ -60,4 +58,4 @@ jobs:
             git pull
             npm install -f
             npm run build
-            pm2 start "npm run start" --name production
+            pm2 start "npm start" --name production
