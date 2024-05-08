@@ -42,7 +42,7 @@ jobs:
 
   Production:
     runs-on: ubuntu-latest
-    environment: Poduction
+    environment: Production
     needs: testing
     steps:
       - name: executing remote ssh commands using password
@@ -57,5 +57,4 @@ jobs:
             git pull
             npm install -f
             npm run build
-            pm2 start "npm run dev" --name testing
-
+            pm2 start "npm run start" --name production
