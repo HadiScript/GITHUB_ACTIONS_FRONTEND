@@ -46,7 +46,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: Production
-      url: 'test.hadielearning.com'
+      url: 'test2.hadielearning.com'
     needs: Testing
     steps:
       - name: Execute remote SSH commands using password
