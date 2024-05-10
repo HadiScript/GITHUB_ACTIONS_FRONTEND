@@ -38,7 +38,7 @@ jobs:
           script: |
             cd /root/test-actions/GITHUB_ACTIONS_FRONTEND
             git pull
-            npm install -f
+            ##npm install -f
             npm run build
             pm2 reload testing --update-env
 
@@ -59,6 +59,6 @@ jobs:
           script: |
             cd /root/test-actions/GITHUB_ACTIONS_FRONTEND
             git pull
-            npm install -f
-            npm run build
+            ##npm install -f
+            ##npm run build
             pm2 reload production --update-env
