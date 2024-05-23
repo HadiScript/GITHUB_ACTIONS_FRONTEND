@@ -77,5 +77,5 @@ jobs:
             docker stop test-actions_frontend || true
             docker rm test-actions_frontend || true
             docker pull test-actions_frontend:production
-            docker run -d -p 3001:3001 --name test-actions_frontend test-actions_frontend:latest
+            docker run -d -p 3001:3001 --name test-actions_production test-actions_production:latest
            ## pm2 reload production --update-env
