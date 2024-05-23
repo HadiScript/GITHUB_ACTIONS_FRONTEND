@@ -1,4 +1,4 @@
-name: CI + CD
+name: CI + CD with docker
 
 on:
   workflow_dispatch:
@@ -25,14 +25,13 @@ jobs:
             docker stop test-actions_backend_1 || true
             docker rm test-actions_backend_1 || true
             docker pull test-actions_backend:staging
-            docker run -d -p 5000:5000 --name test-actions_frontend_1 test-actions_frontend:staging
+            docker run -d -p 5000:5000 --name test-actions_backend_1 test-actions_backend:staging
            ## pm2 reload server --update-env
 
   Testing:
     runs-on: ubuntu-latest
     environment:
       name: testing
-      url: 'actions.hadielearning.com'
     needs: Staging
     steps:
       - name: Checkout code
@@ -59,7 +58,6 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: Production
-      url: 'test2.hadielearning.com'
     needs: Testing
     steps:
       - name: Checkout code
