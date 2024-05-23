@@ -1,6 +1,6 @@
 FROM node:18.18.2
 
-WORKDIR /root/test-actions/GITHUB_ACTIONS_FRONTEND
+WORKDIR /root/test-actions/GITHUB_ACTIONS_PRODUCTION
 
 COPY package*.json ./
 
