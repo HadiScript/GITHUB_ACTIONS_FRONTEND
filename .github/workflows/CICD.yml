@@ -77,9 +77,11 @@ jobs:
           key: ${{ secrets.GIT_KEY }}
           port: 22
           script: |
-            cd /test-actions
-            docker stop test-actions_frontend || true 
-            docker stop test-actions_production || true
-            docker rm test-actions_production || true
-            docker-compose pull
-            docker-compose up -d production  
+            cd /root/test-actions
+            #docker stop test-actions_frontend || true 
+            #docker stop test-actions_production || true
+            #docker rm test-actions_production || true
+            #docker-compose pull
+            #docker-compose up -d production  
+            docker-compose -f docker-compose.yml pull
+            docker-compose -f docker-compose.yml up -d production
