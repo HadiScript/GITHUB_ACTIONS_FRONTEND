@@ -81,6 +81,7 @@ jobs:
             docker stop test-actions_frontend || true 
             docker stop test-actions_production || true
             docker rm test-actions_production || true
-            docker pull test-actions_production:latest
-            docker run -d -p 3002:3002 --name test-actions_production test-actions_production:latest npm run start
-      
+            #docker pull test-actions_production:latest
+            #docker run -d -p 3002:3002 --name test-actions_production test-actions_production:latest npm run start
+            docker-compose pull
+            docker-compose up -d production      
