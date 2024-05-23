@@ -8,7 +8,13 @@ jobs:
     runs-on: ubuntu-latest
     environment: Staging
     steps:
-      - name: Execute remote SSH commands using password
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      - name: Build Docker image
+        run: docker build -t test-actions_frontend:staging .
+      
+      - name: Set up SSH
         uses: appleboy/ssh-action@master
         with:
           host: 109.205.178.167
@@ -16,10 +22,11 @@ jobs:
           key: ${{ secrets.GIT_KEY }}
           port: 22
           script: |
-            cd /root/test-actions/GITHUB_ACTIONS_FRONTEND
-            git pull
-            npm install -f
-            pm2 reload server --update-env
+            docker stop test-actions_backend_1 || true
+            docker rm test-actions_backend_1 || true
+            docker pull test-actions_backend:staging
+            docker run -d -p 5000:5000 --name test-actions_frontend_1 test-actions_frontend:staging
+           ## pm2 reload server --update-env
 
   Testing:
     runs-on: ubuntu-latest
@@ -28,7 +35,13 @@ jobs:
       url: 'actions.hadielearning.com'
     needs: Staging
     steps:
-      - name: Execute remote SSH commands using password
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      - name: Build Docker image
+        run: docker build -t test-actions_frontend:testing .
+      
+      - name: Set up SSH
         uses: appleboy/ssh-action@master
         with:
           host: 109.205.178.167
@@ -36,11 +49,11 @@ jobs:
           key: ${{ secrets.GIT_KEY }}
           port: 22
           script: |
-            cd /root/test-actions/GITHUB_ACTIONS_FRONTEND
-            git pull
-            ##npm install -f
-            npm run build
-            pm2 reload testing --update-env
+            docker stop test-actions_frontend_1 || true
+            docker rm test-actions_frontend_1 || true
+            docker pull test-actions_frontend:testing
+            docker run -d -p 3000:3000 --name test-actions_frontend_1 test-actions_frontend:testing
+           ## pm2 reload testing --update-env
 
   Production:
     runs-on: ubuntu-latest
@@ -49,7 +62,13 @@ jobs:
       url: 'test2.hadielearning.com'
     needs: Testing
     steps:
-      - name: Execute remote SSH commands using password
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      - name: Build Docker image
+        run: docker build -t test-actions_frontend:production .
+      
+      - name: Set up SSH
         uses: appleboy/ssh-action@master
         with:
           host: 109.205.178.167
@@ -57,8 +76,8 @@ jobs:
           key: ${{ secrets.GIT_KEY }}
           port: 22
           script: |
-            cd /root/test-actions/GITHUB_ACTIONS_FRONTEND
-            git pull
-            ##npm install -f
-            ##npm run build
-            pm2 reload production --update-env
+            docker stop test-actions_frontend_1 || true
+            docker rm test-actions_frontend_1 || true
+            docker pull test-actions_frontend:production
+            docker run -d -p 3000:3000 --name test-actions_frontend_1 test-actions_frontend:production
+           ## pm2 reload production --update-env
