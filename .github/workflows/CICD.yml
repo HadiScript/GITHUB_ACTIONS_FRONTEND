@@ -19,7 +19,7 @@ jobs:
         with:
           host: 109.205.178.167
           username: root
-          key: ${{ secrets.GIT_KEY }}
+          key: ${{ secrets.SSH_KEY }}
           port: 22
           script: |
             docker stop test-actions_backend_1 || true
@@ -46,7 +46,7 @@ jobs:
         with:
           host: 109.205.178.167
           username: root
-          key: ${{ secrets.GIT_KEY }}
+          key: ${{ secrets.SSH_KEY }}
           port: 22
           script: |
             docker stop test-actions_frontend_1 || true
@@ -73,7 +73,7 @@ jobs:
         with:
           host: 109.205.178.167
           username: root
-          key: ${{ secrets.GIT_KEY }}
+          key: ${{ secrets.SSH_KEY }}
           port: 22
           script: |
             docker stop test-actions_frontend_1 || true
