@@ -1,4 +1,4 @@
-name: CI + CD with docker
+name: CI + CD
 
 on:
   workflow_dispatch:
@@ -19,19 +19,20 @@ jobs:
         with:
           host: 109.205.178.167
           username: root
-          key: ${{ secrets.SSH_KEY }}
+          key: ${{ secrets.GIT_KEY }}
           port: 22
           script: |
-            docker stop test-actions_backend || true
-            docker rm test-actions_backend || true
-            docker pull test-actions_backend:latest
-            docker run -d -p 5000:5000 --name test-actions_backend test-actions_backend:latest
-           ## pm2 reload server --update-env
+            docker stop test-actions_frontend_1 || true
+            docker rm test-actions_frontend_1 || true
+            docker pull test-actions_frontend:staging
+            docker run -d -p 3000:3000 --name test-actions_frontend_1 test-actions_frontend:staging
+    ##        pm2 reload server --update-env
 
   Testing:
     runs-on: ubuntu-latest
     environment:
       name: testing
+      url: 'actions.hadielearning.com'
     needs: Staging
     steps:
       - name: Checkout code
@@ -45,19 +46,20 @@ jobs:
         with:
           host: 109.205.178.167
           username: root
-          key: ${{ secrets.SSH_KEY }}
+          key: ${{ secrets.GIT_KEY }}
           port: 22
           script: |
-            docker stop test-actions_frontend || true
-            docker rm test-actions_frontend || true
-            docker pull test-actions_frontend:latest
-            docker run -d -p 3000:3000 --name test-actions_frontend test-actions_frontend:latest
-           ## pm2 reload testing --update-env
+            docker stop test-actions_frontend_1 || true
+            docker rm test-actions_frontend_1 || true
+            docker pull test-actions_frontend:testing
+            docker run -d -p 3000:3000 --name test-actions_frontend_1 test-actions_frontend:testing
+  ##          pm2 reload testing --update-env
 
   Production:
     runs-on: ubuntu-latest
     environment:
       name: Production
+      url: 'test2.hadielearning.com'
     needs: Testing
     steps:
       - name: Checkout code
@@ -71,11 +73,9 @@ jobs:
         with:
           host: 109.205.178.167
           username: root
-          key: ${{ secrets.SSH_KEY }}
+          key: ${{ secrets.GIT_KEY }}
           port: 22
           script: |
-            docker stop test-actions_frontend || true
-            docker rm test-actions_frontend || true
-            docker pull test-actions_frontend:latest
-            docker run -d -p 3001:3001 --name test-actions_frontend test-actions_frontend:latest
-           ## pm2 reload production --update-env
+            docker stop $(docker ps -q)
+            npm run build
+            pm2 reload production --update-env
