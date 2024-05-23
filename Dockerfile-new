@@ -1,0 +1,23 @@
+# Stage 1: Build the frontend application
+FROM node:18.18.2 AS builder
+
+WORKDIR /root/test-actions/GITHUB_ACTIONS_FRONTEND
+
+# Copy package files separately to leverage Docker cache
+COPY package*.json ./
+RUN npm i -f
+
+# Copy the rest of the application code
+COPY . .
+
+# Build the frontend application
+RUN npm run build
+
+# Stage 2: Serve built files using NGINX
+FROM nginx:alpine
+
+# Copy built files from the previous stage
+COPY --from=builder /root/test-actions/GITHUB_ACTIONS_FRONTEND/build /usr/share/nginx/html
+
+# Start NGINX server
+CMD ["nginx", "-g", "daemon off;"]
