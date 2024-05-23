@@ -77,7 +77,8 @@ jobs:
           key: ${{ secrets.GIT_KEY }}
           port: 22
           script: |
-            docker stop $(docker ps -q)
+            #docker stop $(docker ps -q)
+            docker stop test-actions_frontend:latest 
             docker stop test-actions_production || true
             docker rm test-actions_production || true
             docker pull test-actions_production:latest
