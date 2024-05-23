@@ -66,10 +66,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
       
-      - name: Build Docker image
-        run: docker build -t test-actions_frontend:production .
+      - name: Build Docker image for Production
+        run: docker build -t test-actions_production:latest .
       
-      - name: Set up SSH
+      - name: Set up SSH for Production
         uses: appleboy/ssh-action@master
         with:
           host: 109.205.178.167
@@ -78,5 +78,8 @@ jobs:
           port: 22
           script: |
             docker stop $(docker ps -q)
-            npm run build
-            pm2 reload production --update-env
+            docker stop test-actions_production || true
+            docker rm test-actions_production || true
+            docker pull test-actions_production:latest
+            docker run -d -p 3002:3002 --name test-actions_production test-actions_production:latest npm run start
+      
