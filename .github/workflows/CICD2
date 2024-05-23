@@ -1,4 +1,4 @@
-name: CI + CD with Docker
+name: CI + CD with docker
 
 on:
   workflow_dispatch:
@@ -11,7 +11,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
       
-      - name: Build Docker image for Staging
+      - name: Build Docker image
         run: docker build -t test-actions_frontend:staging .
       
       - name: Set up SSH
@@ -37,7 +37,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
       
-      - name: Build Docker image for Testing
+      - name: Build Docker image
         run: docker build -t test-actions_frontend:testing .
       
       - name: Set up SSH
@@ -63,7 +63,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
       
-      - name: Build Docker image for Production
+      - name: Build Docker image
         run: docker build -t test-actions_frontend:production .
       
       - name: Set up SSH
