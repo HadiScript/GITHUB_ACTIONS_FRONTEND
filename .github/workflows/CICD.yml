@@ -12,7 +12,7 @@ jobs:
         uses: actions/checkout@v3
       
       - name: Build Docker image
-        run: docker build -t test-actions_frontend:latest .
+        run: docker build -t test-actions_backend:latest .
       
       - name: Set up SSH
         uses: appleboy/ssh-action@master
@@ -23,8 +23,8 @@ jobs:
           port: 22
           script: |
             docker stop $(docker ps -q)
-            docker stop test-actions_backend_1 || true
-            docker rm test-actions_backend_1 || true
+            docker stop test-actions_backend || true
+            docker rm test-actions_backend || true
             docker pull test-actions_backend:latest
             docker run -d -p 5000:5000 --name test-actions_backend test-actions_backend:latest
     ##        pm2 reload server --update-env
