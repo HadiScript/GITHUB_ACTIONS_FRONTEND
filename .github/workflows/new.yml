@@ -1,4 +1,4 @@
-name: CI + CD
+name: CLASS-2
 
 on:
   workflow_dispatch:
