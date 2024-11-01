@@ -1,5 +1,6 @@
-// const baseUrl = "http://localhost:5000";
-const baseUrl = "https://api-test.hadielearning.com";
+//const baseUrl = "http://localhost:5000";
+const baseUrl = "https://actions-server.hadielearning.com";
+//const baseUrl = "http://109.205.178.167:5000";
 
 export const API = `${baseUrl}/api`;
 
